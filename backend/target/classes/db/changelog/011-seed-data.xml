@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="011-seed-data" author="finance-app">
+        <!-- Default user (password: Finance@123) -->
+        <insert tableName="users">
+            <column name="username" value="lnarayana"/>
+            <column name="email" value="lnarayana@financeapp.local"/>
+            <column name="password_hash" value="$2a$12$K8HH/vS0GZuRCc3BXc.IuOpQ7uAcJDd1q6W/SiO3bKNxHX7sN9yau"/>
+            <column name="role" value="USER"/>
+        </insert>
+
+        <!-- Employee profile from Salary sheet -->
+        <insert tableName="employee_profile">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="employee_id" value="13398194"/>
+            <column name="full_name" value="Lakshminarayana Kosaraju"/>
+            <column name="department" value="ATCI"/>
+            <column name="employer" value="Accenture"/>
+            <column name="date_of_joining" value="2022-02-10"/>
+            <column name="date_of_birth" value="1985-01-01"/>
+            <column name="management_level" valueNumeric="7"/>
+            <column name="is_metro" valueBoolean="false"/>
+            <column name="pf_percentage" valueNumeric="0.12"/>
+            <column name="nps_percentage" valueNumeric="0.10"/>
+            <column name="financial_year" value="2025-26"/>
+        </insert>
+
+        <!-- SGBs from SGB sheet -->
+        <insert tableName="sovereign_gold_bonds">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="series_name" value="SGB 2018-19 SERIES I (Apr)"/>
+            <column name="nse_symbol" value="SGBMAY26"/>
+            <column name="isin" value="IN0020180033"/>
+            <column name="subscription_date" value="2018-04-20"/>
+            <column name="settlement_date" value="2018-05-04"/>
+            <column name="issue_price" valueNumeric="3064.00"/>
+            <column name="current_price" valueNumeric="0"/>
+            <column name="quantity_grams" valueNumeric="4"/>
+            <column name="invested_amount" valueNumeric="12256.00"/>
+            <column name="maturity_date" value="2026-05-04"/>
+            <column name="roi" valueNumeric="0.025"/>
+        </insert>
+        <insert tableName="sovereign_gold_bonds">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="series_name" value="SGB 2018-19 SERIES II (Oct)"/>
+            <column name="nse_symbol" value="SGBOCT26"/>
+            <column name="isin" value="IN0020180249"/>
+            <column name="subscription_date" value="2018-10-20"/>
+            <column name="settlement_date" value="2018-10-23"/>
+            <column name="issue_price" valueNumeric="3096.00"/>
+            <column name="current_price" valueNumeric="0"/>
+            <column name="quantity_grams" valueNumeric="3"/>
+            <column name="invested_amount" valueNumeric="9288.00"/>
+            <column name="maturity_date" value="2026-10-23"/>
+            <column name="roi" valueNumeric="0.025"/>
+        </insert>
+        <insert tableName="sovereign_gold_bonds">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="series_name" value="SGB 2018-19 SERIES IV (Jan)"/>
+            <column name="nse_symbol" value="SGBJAN27"/>
+            <column name="isin" value="IN0020180389"/>
+            <column name="subscription_date" value="2018-12-24"/>
+            <column name="settlement_date" value="2019-01-01"/>
+            <column name="issue_price" valueNumeric="3069.00"/>
+            <column name="current_price" valueNumeric="0"/>
+            <column name="quantity_grams" valueNumeric="5"/>
+            <column name="invested_amount" valueNumeric="15345.00"/>
+            <column name="maturity_date" value="2027-01-01"/>
+            <column name="roi" valueNumeric="0.025"/>
+        </insert>
+        <insert tableName="sovereign_gold_bonds">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="series_name" value="SGB 2022-23 SERIES IV"/>
+            <column name="isin" value="IN0020220169"/>
+            <column name="subscription_date" value="2023-03-13"/>
+            <column name="settlement_date" value="2023-03-14"/>
+            <column name="issue_price" valueNumeric="5561.00"/>
+            <column name="current_price" valueNumeric="0"/>
+            <column name="quantity_grams" valueNumeric="1"/>
+            <column name="invested_amount" valueNumeric="5561.00"/>
+            <column name="maturity_date" value="2031-03-14"/>
+            <column name="roi" valueNumeric="0.025"/>
+        </insert>
+        <insert tableName="sovereign_gold_bonds">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="series_name" value="SGB 2023-24 SERIES IV"/>
+            <column name="isin" value="IN0020220169"/>
+            <column name="subscription_date" value="2024-02-16"/>
+            <column name="settlement_date" value="2024-03-01"/>
+            <column name="issue_price" valueNumeric="6213.00"/>
+            <column name="current_price" valueNumeric="0"/>
+            <column name="quantity_grams" valueNumeric="1"/>
+            <column name="invested_amount" valueNumeric="6213.00"/>
+            <column name="maturity_date" value="2032-03-01"/>
+            <column name="roi" valueNumeric="0.025"/>
+        </insert>
+
+        <!-- Budget categories from Budget sheet -->
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="Home Loan EMI"/>
+            <column name="parent_category" value="Liabilities"/>
+            <column name="category_type" value="LIABILITY"/>
+            <column name="monthly_budget" valueNumeric="95000"/>
+            <column name="sort_order" valueNumeric="1"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="Insurance Loan"/>
+            <column name="parent_category" value="Liabilities"/>
+            <column name="category_type" value="LIABILITY"/>
+            <column name="monthly_budget" valueNumeric="5000"/>
+            <column name="sort_order" valueNumeric="2"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="School Fees"/>
+            <column name="parent_category" value="Expenses"/>
+            <column name="category_type" value="EXPENSE"/>
+            <column name="monthly_budget" valueNumeric="20000"/>
+            <column name="sort_order" valueNumeric="10"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="Home H - Maintenance"/>
+            <column name="parent_category" value="Expenses"/>
+            <column name="category_type" value="EXPENSE"/>
+            <column name="monthly_budget" valueNumeric="55000"/>
+            <column name="sort_order" valueNumeric="11"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="Home V - Maintenance"/>
+            <column name="parent_category" value="Expenses"/>
+            <column name="category_type" value="EXPENSE"/>
+            <column name="monthly_budget" valueNumeric="40000"/>
+            <column name="sort_order" valueNumeric="12"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="Vehicle Maintenance"/>
+            <column name="parent_category" value="Expenses"/>
+            <column name="category_type" value="EXPENSE"/>
+            <column name="monthly_budget" valueNumeric="15000"/>
+            <column name="sort_order" valueNumeric="13"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="Health Insurance"/>
+            <column name="parent_category" value="Expenses"/>
+            <column name="category_type" value="EXPENSE"/>
+            <column name="monthly_budget" valueNumeric="20000"/>
+            <column name="sort_order" valueNumeric="14"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="PPF"/>
+            <column name="parent_category" value="Investments"/>
+            <column name="category_type" value="INVESTMENT"/>
+            <column name="monthly_budget" valueNumeric="12500"/>
+            <column name="sort_order" valueNumeric="20"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="NPS Tier I"/>
+            <column name="parent_category" value="Investments"/>
+            <column name="category_type" value="INVESTMENT"/>
+            <column name="monthly_budget" valueNumeric="12500"/>
+            <column name="sort_order" valueNumeric="21"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="NPS Tier II"/>
+            <column name="parent_category" value="Investments"/>
+            <column name="category_type" value="INVESTMENT"/>
+            <column name="monthly_budget" valueNumeric="12500"/>
+            <column name="sort_order" valueNumeric="22"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="MF - Axis"/>
+            <column name="parent_category" value="Investments"/>
+            <column name="category_type" value="INVESTMENT"/>
+            <column name="monthly_budget" valueNumeric="12500"/>
+            <column name="sort_order" valueNumeric="23"/>
+        </insert>
+        <insert tableName="budget_categories">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="category_name" value="MF - Kotak"/>
+            <column name="parent_category" value="Investments"/>
+            <column name="category_type" value="INVESTMENT"/>
+            <column name="monthly_budget" valueNumeric="12500"/>
+            <column name="sort_order" valueNumeric="24"/>
+        </insert>
+
+        <!-- MF SIPs from MF sheet -->
+        <insert tableName="mutual_fund_sips">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="fund_name" value="Axis Global Equity Alpha FOF"/>
+            <column name="amc" value="Axis"/>
+            <column name="fund_category" value="FOF"/>
+            <column name="monthly_sip" valueNumeric="120"/>
+        </insert>
+        <insert tableName="mutual_fund_sips">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="fund_name" value="Axis Gold Fund"/>
+            <column name="amc" value="Axis"/>
+            <column name="fund_category" value="Gold"/>
+            <column name="monthly_sip" valueNumeric="100"/>
+        </insert>
+        <insert tableName="mutual_fund_sips">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="fund_name" value="Axis Multicap Fund"/>
+            <column name="amc" value="Axis"/>
+            <column name="fund_category" value="Equity"/>
+            <column name="monthly_sip" valueNumeric="150"/>
+        </insert>
+        <insert tableName="mutual_fund_sips">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="fund_name" value="Axis Strategic Bond Fund"/>
+            <column name="amc" value="Axis"/>
+            <column name="fund_category" value="Debt"/>
+            <column name="monthly_sip" valueNumeric="130"/>
+        </insert>
+        <insert tableName="mutual_fund_sips">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="fund_name" value="Kotak Gold Fund"/>
+            <column name="amc" value="Kotak"/>
+            <column name="fund_category" value="Gold"/>
+            <column name="monthly_sip" valueNumeric="100"/>
+        </insert>
+        <insert tableName="mutual_fund_sips">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="fund_name" value="Kotak Silver ETF FOF"/>
+            <column name="amc" value="Kotak"/>
+            <column name="fund_category" value="Silver"/>
+            <column name="monthly_sip" valueNumeric="100"/>
+        </insert>
+        <insert tableName="mutual_fund_sips">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="fund_name" value="Kotak Multicap Fund"/>
+            <column name="amc" value="Kotak"/>
+            <column name="fund_category" value="Equity"/>
+            <column name="monthly_sip" valueNumeric="100"/>
+        </insert>
+        <insert tableName="mutual_fund_sips">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="fund_name" value="Kotak Large Cap Fund"/>
+            <column name="amc" value="Kotak"/>
+            <column name="fund_category" value="Equity"/>
+            <column name="monthly_sip" valueNumeric="100"/>
+        </insert>
+        <insert tableName="mutual_fund_sips">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="fund_name" value="UTI Nifty200 Momentum 30 Index Fund"/>
+            <column name="amc" value="UTI"/>
+            <column name="fund_category" value="Index"/>
+            <column name="monthly_sip" valueNumeric="500"/>
+        </insert>
+        <insert tableName="mutual_fund_sips">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="fund_name" value="UTI BSE Low Volatility Index Fund"/>
+            <column name="amc" value="UTI"/>
+            <column name="fund_category" value="Index"/>
+            <column name="monthly_sip" valueNumeric="500"/>
+        </insert>
+
+        <!-- Other investments -->
+        <insert tableName="other_investments">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="investment_type" value="NPS_T1"/>
+            <column name="monthly_contribution" valueNumeric="7500"/>
+            <column name="account_number" value="600101100010294"/>
+        </insert>
+        <insert tableName="other_investments">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="investment_type" value="NPS_T2"/>
+            <column name="monthly_contribution" valueNumeric="7500"/>
+            <column name="account_number" value="600102100010295"/>
+        </insert>
+        <insert tableName="other_investments">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="investment_type" value="PPF"/>
+            <column name="monthly_contribution" valueNumeric="7500"/>
+            <column name="account_number" value="010040503800"/>
+        </insert>
+        <insert tableName="other_investments">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username='lnarayana')"/>
+            <column name="investment_type" value="POSA"/>
+            <column name="monthly_contribution" valueNumeric="7500"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="003-create-salary" author="finance-app">
+        <!-- Monthly salary slips -->
+        <createTable tableName="salary_slips">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_salary_user"
+                             references="users(id)"/>
+            </column>
+            <column name="month" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="financial_year" type="VARCHAR(9)">
+                <constraints nullable="false"/>
+            </column>
+            <!-- Earnings -->
+            <column name="basic" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="personal_allowance" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="other_allowance" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="hra" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="lta" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="exgratia" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="on_call_shift_allowance" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="variable_pay" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="espp_refund" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="leave_encashment" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="misc_earnings" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <!-- Deductions -->
+            <column name="pf_deduction" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="vpf_deduction" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="nps_employer" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="income_tax" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="profession_tax" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="espp_deduction" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="ehip" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="ngo_contribution" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="misc_deductions" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+        <addUniqueConstraint tableName="salary_slips"
+            columnNames="user_id,month,financial_year"
+            constraintName="uq_salary_user_month_fy"/>
+
+        <!-- PF tracker -->
+        <createTable tableName="pf_tracker">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_pf_user"
+                             references="users(id)"/>
+            </column>
+            <column name="month" type="VARCHAR(3)"/>
+            <column name="financial_year" type="VARCHAR(9)"/>
+            <column name="opening_balance" type="NUMERIC(14,2)" defaultValueNumeric="0"/>
+            <column name="interest" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="closing_balance" type="NUMERIC(14,2)" defaultValueNumeric="0"/>
+            <column name="vpf_percentage" type="NUMERIC(5,4)" defaultValueNumeric="0"/>
+        </createTable>
+
+        <!-- Tax deductions (80C, 80D etc) -->
+        <createTable tableName="tax_deductions">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_taxded_user"
+                             references="users(id)"/>
+            </column>
+            <column name="financial_year" type="VARCHAR(9)"/>
+            <column name="epf_employee" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="vpf" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="ppf" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="nsc" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="elss" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="home_loan_principal" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="insurance_premium" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="tuition_fees" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="sec80c_total" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="nps_employee_80ccd1" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="nps_employer_80ccd2" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="home_loan_interest_24b" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="sb_interest_80tta" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="medical_insurance_80d" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="donation_80g" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="other_deductions" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="savings_bank_interest" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="fd_interest" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="other_income" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="hl_loan_taken_after_1999" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="hl_sec80eea_eligible" type="BOOLEAN" defaultValueBoolean="false"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

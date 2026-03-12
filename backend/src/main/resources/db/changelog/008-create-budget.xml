@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="008-create-budget" author="finance-app">
+        <createTable tableName="budget_categories">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_budcat_user"
+                             references="users(id)"/>
+            </column>
+            <column name="category_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_category" type="VARCHAR(100)"/>
+            <column name="category_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <!-- LIABILITY, EXPENSE, INVESTMENT -->
+            <column name="monthly_budget" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="sort_order" type="INT" defaultValueNumeric="0"/>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true"/>
+        </createTable>
+        <addUniqueConstraint tableName="budget_categories"
+            columnNames="user_id,category_name"
+            constraintName="uq_budget_user_cat"/>
+    </changeSet>
+
+</databaseChangeLog>

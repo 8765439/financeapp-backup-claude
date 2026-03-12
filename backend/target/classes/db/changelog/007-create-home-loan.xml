@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="007-create-home-loan" author="finance-app">
+        <createTable tableName="home_loan">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_homeloan_user"
+                             references="users(id)"/>
+            </column>
+            <column name="lender" type="VARCHAR(50)"/>
+            <column name="loan_account" type="VARCHAR(30)"/>
+            <column name="sanctioned_amount" type="NUMERIC(14,2)"/>
+            <column name="disbursed_amount" type="NUMERIC(14,2)" defaultValueNumeric="0"/>
+            <column name="property_name" type="VARCHAR(200)"/>
+            <column name="total_property_cost" type="NUMERIC(14,2)"/>
+            <column name="tenure_years" type="INT"/>
+            <column name="sanction_date" type="DATE"/>
+            <column name="is_self_occupied" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="notes" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <!-- Interest rate history (floating rates change over time) -->
+        <createTable tableName="home_loan_rate_history">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="loan_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_rate_loan"
+                             references="home_loan(id)" deleteCascade="true"/>
+            </column>
+            <column name="effective_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interest_rate" type="NUMERIC(6,4)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- EMI payment log -->
+        <createTable tableName="home_loan_payments">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="loan_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_pay_loan"
+                             references="home_loan(id)" deleteCascade="true"/>
+            </column>
+            <column name="payment_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="credited_amount" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="interest_charged" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="principal_paid" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="emi_amount" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="remaining_balance" type="NUMERIC(14,2)" defaultValueNumeric="0"/>
+            <column name="amount_cleared" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+        </createTable>
+        <createIndex tableName="home_loan_payments" indexName="idx_hl_pay_date">
+            <column name="loan_id"/>
+            <column name="payment_date"/>
+        </createIndex>
+
+        <!-- Apartment payment schedule (builder milestones) -->
+        <createTable tableName="apartment_payments">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="loan_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_apt_loan"
+                             references="home_loan(id)"/>
+            </column>
+            <column name="milestone_no" type="INT"/>
+            <column name="milestone_desc" type="VARCHAR(255)"/>
+            <column name="payment_date" type="DATE"/>
+            <column name="amount" type="NUMERIC(12,2)"/>
+            <column name="gst" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="tds" type="NUMERIC(12,2)" defaultValueNumeric="0"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="PENDING"/>
+            <!-- PENDING, PAID, PARTIAL -->
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

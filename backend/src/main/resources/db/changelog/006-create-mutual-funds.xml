@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="006-create-mutual-funds" author="finance-app">
+        <createTable tableName="mutual_fund_sips">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_mfsip_user"
+                             references="users(id)"/>
+            </column>
+            <column name="fund_name" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amc" type="VARCHAR(50)"/>
+            <column name="fund_category" type="VARCHAR(50)"/>
+            <!-- Equity, Debt, Gold, Hybrid, Index, ELSS -->
+            <column name="monthly_sip" type="NUMERIC(10,2)" defaultValueNumeric="0"/>
+            <column name="folio_number" type="VARCHAR(30)"/>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="start_date" type="DATE"/>
+            <column name="units_held" type="NUMERIC(12,4)" defaultValueNumeric="0"/>
+            <column name="nav" type="NUMERIC(10,4)" defaultValueNumeric="0"/>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <!-- Non-MF investments: NPS, PPF, POSA -->
+        <createTable tableName="other_investments">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_oinvest_user"
+                             references="users(id)"/>
+            </column>
+            <column name="investment_type" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <!-- NPS_T1, NPS_T2, PPF, POSA, AUGMONT -->
+            <column name="monthly_contribution" type="NUMERIC(10,2)" defaultValueNumeric="0"/>
+            <column name="account_number" type="VARCHAR(30)"/>
+            <column name="current_balance" type="NUMERIC(14,2)" defaultValueNumeric="0"/>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

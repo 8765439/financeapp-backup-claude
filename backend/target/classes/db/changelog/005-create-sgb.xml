@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="005-create-sgb" author="finance-app">
+        <createTable tableName="sovereign_gold_bonds">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_sgb_user"
+                             references="users(id)"/>
+            </column>
+            <column name="series_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nse_symbol" type="VARCHAR(20)"/>
+            <column name="isin" type="VARCHAR(20)"/>
+            <column name="subscription_date" type="DATE"/>
+            <column name="settlement_date" type="DATE"/>
+            <column name="issue_price" type="NUMERIC(10,2)"/>
+            <column name="current_price" type="NUMERIC(10,2)" defaultValueNumeric="0"/>
+            <column name="quantity_grams" type="NUMERIC(8,3)"/>
+            <column name="invested_amount" type="NUMERIC(12,2)"/>
+            <column name="maturity_date" type="DATE"/>
+            <column name="roi" type="NUMERIC(5,4)" defaultValueNumeric="0.025"/>
+            <column name="interest_payout" type="VARCHAR(20)" defaultValue="Half-Yearly"/>
+            <column name="interest_payout_dates" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

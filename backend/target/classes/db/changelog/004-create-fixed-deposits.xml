@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="004-create-fixed-deposits" author="finance-app">
+        <createTable tableName="fixed_deposits">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_fd_user"
+                             references="users(id)"/>
+            </column>
+            <column name="account_number" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bank_name" type="VARCHAR(50)"/>
+            <column name="fd_type" type="VARCHAR(20)" defaultValue="FD"/>
+            <!-- FD, RD, MIS, POSB -->
+            <column name="start_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="maturity_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="principal_amount" type="NUMERIC(12,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interest_rate" type="NUMERIC(6,4)"/>
+            <column name="monthly_interest" type="NUMERIC(10,2)" defaultValueNumeric="0"/>
+            <column name="interest_month" type="VARCHAR(3)"/>
+            <!-- Jan/Feb/.../M for monthly, Y for yearly -->
+            <column name="interest_year_type" type="VARCHAR(1)" defaultValue="M"/>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="notes" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+        <createIndex tableName="fixed_deposits" indexName="idx_fd_user_active">
+            <column name="user_id"/>
+            <column name="is_active"/>
+        </createIndex>
+
+        <!-- Yearly interest projection per FD -->
+        <createTable tableName="fd_interest_projection">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fd_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_fdproj_fd"
+                             references="fixed_deposits(id)" deleteCascade="true"/>
+            </column>
+            <column name="calendar_year" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interest_amount" type="NUMERIC(10,2)" defaultValueNumeric="0"/>
+        </createTable>
+        <addUniqueConstraint tableName="fd_interest_projection"
+            columnNames="fd_id,calendar_year"
+            constraintName="uq_fdproj_fd_year"/>
+
+    </changeSet>
+
+</databaseChangeLog>
